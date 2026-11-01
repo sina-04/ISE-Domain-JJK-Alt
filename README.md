@@ -6,7 +6,7 @@
 
 A bilingual, responsive field guide to Industrial and Systems Engineering, with the supplied Jujutsu Kaisen artwork. Built on React 19 / TypeScript / vinext / Tailwind / Sites.
 
-The overview uses a subject directory, catalog-derived course counts, and editorial links to graduate pathways, careers, tools, and reading. `DESIGN.md` records the visual system and design decisions. `app/editorial.css` defines the supplied purple palette; `app/domain-trees.css` styles the Mathematics hierarchy, filled career-domain boxes, and restored motion details.
+The overview uses a subject directory, catalog-derived course counts, and editorial links to graduate pathways, careers, tools, and reading. `DESIGN.md` records the visual system and design decisions. `app/editorial.css` defines the supplied purple palette; `app/domain-trees.css` styles the Mathematics hierarchy, filled career-domain boxes, the complete career overview tree, and restored motion details.
 
 ## Run
 

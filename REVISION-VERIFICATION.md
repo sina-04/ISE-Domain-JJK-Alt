@@ -2,6 +2,20 @@
 
 Verified 2026-11-01. This report supersedes the initial redesign report for the changed interface.
 
+## Career guide structure update
+
+Verified 2026-11-01 against https://sina-04.github.io/ISE-Domain/en/careers#career-domain-production.
+
+- A single complete navigation tree now precedes the detailed Traditional and Modern branch sections. It contains all 10 domain anchors and 31 career entries. Per-domain repeated trees were removed; the existing detailed cards use the responsive grid.
+- The target purple palette, fonts, theme controls, artwork, card components, dialogs, career data, and resource destinations remain intact. Maintenance and Repair retains its existing unrated state.
+- TypeScript (`npx tsc --noEmit --incremental false`) and `node scripts/validate-data.mjs` passed.
+- The GitHub Pages production build prerendered all 18 routes. Artifact preparation verified 68 stylesheet and 269 script references.
+- Browser QA used the production export with the `/ISE-Domain-JJK-Alt` prefix. English and Persian passed at 375, 768, and 1440px without horizontal overflow; all 10 domains and 31 tree roles remained present.
+- Verified domain anchors, career dialogs from tree and card entries, keyboard Escape dismissal, focus return, Persian RTL dialogs, and dark/light rendering. No browser console errors were recorded during this traversal.
+- Existing responsive breakpoints, logical tree connectors, rounded domain panels, and light/dark theme tokens were reused. No new dependency was added.
+
+The following original revision notes remain historical evidence; the single overview tree described above supersedes the earlier per-domain tree layout.
+
 ## Requested changes
 
 - PASS: Japanese principle frame enlarged to 136 × 136px on desktop. The three-character Jidoka seal also fits the enlarged mobile frame without overflow.

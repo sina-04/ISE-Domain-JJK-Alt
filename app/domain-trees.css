@@ -104,13 +104,23 @@ dialog.sukuna-domain-expansion {
   }
 }
 
-.editorial-shell .career-map {
-  display: block;
-  background: var(--surface);
+.editorial-shell .career-map-intro,
+.editorial-shell .career-tree {
   border-radius: 14px;
 }
-.editorial-shell .career-map-intro {
-  max-width: 850px;
+.career-tree-domains {
+  align-content: start;
+}
+.career-tree-domains > li {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-raised);
+}
+.career-tree ul {
+  padding-block: 9px 0;
+  padding-inline: 21px 0;
 }
 .editorial-shell .career-domain-section {
   padding: 28px;
@@ -124,88 +134,6 @@ dialog.sukuna-domain-expansion {
   padding-bottom: 22px;
   margin-bottom: 24px;
   border-bottom: 1px solid var(--line);
-}
-.career-domain-body {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.6fr) minmax(0, 1.4fr);
-  gap: 28px;
-  align-items: start;
-}
-.career-domain-tree {
-  min-width: 0;
-  padding-inline-end: 24px;
-  border-inline-end: 1px solid var(--line);
-}
-.career-domain-tree-root {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9375rem;
-  font-weight: 700;
-  line-height: 1.6;
-}
-.career-domain-tree ul {
-  list-style: none;
-  margin: 18px 0 0 12px;
-  padding: 0 0 0 18px;
-  border-inline-start: 1px solid var(--line);
-}
-[dir='rtl'] .career-domain-tree ul {
-  margin: 18px 12px 0 0;
-  padding: 0 18px 0 0;
-}
-.career-domain-tree li {
-  position: relative;
-  padding-block: 5px;
-}
-.career-domain-tree li::before {
-  content: '';
-  position: absolute;
-  inset-inline-start: -18px;
-  top: 24px;
-  width: 14px;
-  border-top: 1px solid var(--line);
-}
-.career-domain-tree .career-tree-role {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 7px;
-  min-height: 48px;
-  padding: 8px 10px;
-  width: 100%;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--foreground);
-  text-align: start;
-  font-size: 0.8125rem;
-  line-height: 1.6;
-}
-.career-domain-tree .career-tree-role:hover {
-  background: var(--surface-raised);
-  color: var(--accent);
-}
-.career-domain-tree .career-tree-role-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.career-domain-tree .career-tree-ai {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--muted);
-  font-size: 0.6875rem;
-}
-.career-domain-tree .career-tree-acronym {
-  color: var(--accent);
-  font-size: 0.6875rem;
-}
-.editorial-shell .career-domain-section .career-card-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
 }
 .editorial-shell .career-domain-section .career-card {
   background: var(--surface-raised);
@@ -310,10 +238,6 @@ dialog.sukuna-domain-expansion {
   .editorial-shell .industry-note {
     grid-template-columns: 136px minmax(0, 1fr);
   }
-  .career-domain-body {
-    grid-template-columns: minmax(180px, 0.6fr) minmax(0, 1.4fr);
-    gap: 20px;
-  }
 }
 @media (max-width: 800px) {
   .editorial-shell .industry-note {
@@ -327,14 +251,6 @@ dialog.sukuna-domain-expansion {
   }
   .editorial-shell .social-links {
     margin-inline-start: 0;
-  }
-  .career-domain-body {
-    grid-template-columns: 1fr;
-  }
-  .career-domain-tree {
-    border-inline-end: 0;
-    border-bottom: 1px solid var(--line);
-    padding: 0 0 24px;
   }
   .mathematics-tree-branches {
     grid-template-columns: 1fr;

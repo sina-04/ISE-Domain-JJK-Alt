@@ -151,54 +151,6 @@ function CareerCard({
   );
 }
 
-function CareerDomainTree({
-  domainId,
-  locale,
-  onOpen,
-}: {
-  domainId: string;
-  locale: Locale;
-  onOpen: (career: CareerProfile) => void;
-}) {
-  const domain = careerDomains.find((domain) => domain.id === domainId)!;
-  return (
-    <nav
-      className="career-domain-tree"
-      aria-label={`${domain.name[locale]} · ${locale === 'fa' ? 'درخت مسیرها' : 'career tree'}`}
-    >
-      <div className="career-domain-tree-root">
-        <Network size={18} aria-hidden="true" />
-        {domain.name[locale]}
-      </div>
-      <ul>
-        {domain.careerIds.map((id) => {
-          const career = careerById[id];
-          return (
-            <li key={id}>
-              {id === 'data-science' ? (
-                <Link
-                  className="career-tree-role"
-                  href={`/${locale}/data-science`}
-                >
-                  <CareerTreeRole career={career} locale={locale} />
-                </Link>
-              ) : (
-                <button
-                  type="button"
-                  className="career-tree-role"
-                  onClick={() => onOpen(career)}
-                >
-                  <CareerTreeRole career={career} locale={locale} />
-                </button>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
-  );
-}
-
 export function CareerGuide({
   locale,
   selectedCareer,
@@ -249,6 +201,96 @@ export function CareerGuide({
             </span>
           </div>
         </div>
+        <nav
+          className="career-tree"
+          aria-label={t('Career domain tree', 'درخت حوزه‌های شغلی')}
+        >
+          <div className="career-tree-root">
+            <Network size={18} aria-hidden="true" />
+            <span>
+              {t('Career & Professional Domains', 'حوزه‌های شغلی و حرفه‌ای')}
+            </span>
+          </div>
+          <ol className="career-tree-tracks">
+            {careerTracks.map((track, trackIndex) => {
+              const domainGroups =
+                track.id === 'traditional'
+                  ? [track.domainIds.slice(0, 3), track.domainIds.slice(3)]
+                  : [track.domainIds];
+
+              return (
+                <li
+                  className={`career-tree-track career-tree-track-${track.id}`}
+                  key={track.id}
+                >
+                  <div className="career-tree-track-heading">
+                    <span>{formatNumber(trackIndex + 1, locale, 2)}</span>
+                    <strong>{track.name[locale]}</strong>
+                  </div>
+                  <div className="career-tree-domain-columns">
+                    {domainGroups.map((domainIds, groupIndex) => (
+                      <ol
+                        className="career-tree-domains"
+                        key={`${track.id}-${groupIndex}`}
+                      >
+                        {domainIds.map((domainId) => {
+                          const domainIndex = track.domainIds.indexOf(domainId);
+                          const domain = careerDomains.find(
+                            (item) => item.id === domainId,
+                          )!;
+                          return (
+                            <li key={domain.id}>
+                              <a href={`#career-domain-${domain.id}`}>
+                                <span>
+                                  {formatPath(
+                                    [trackIndex + 1, domainIndex + 1],
+                                    locale,
+                                  )}
+                                </span>
+                                <strong>{domain.name[locale]}</strong>
+                              </a>
+                              <ul>
+                                {domain.careerIds.map((id) => {
+                                  const career = careerById[id];
+                                  return (
+                                    <li key={id}>
+                                      {career.id === 'data-science' ? (
+                                        <Link
+                                          className="career-tree-role"
+                                          href={`/${locale}/data-science`}
+                                        >
+                                          <CareerTreeRole
+                                            career={career}
+                                            locale={locale}
+                                          />
+                                        </Link>
+                                      ) : (
+                                        <button
+                                          type="button"
+                                          className="career-tree-role"
+                                          onClick={() => onOpen(career)}
+                                        >
+                                          <CareerTreeRole
+                                            career={career}
+                                            locale={locale}
+                                          />
+                                        </button>
+                                      )}
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </li>
+                          );
+                        })}
+                      </ol>
+                    ))}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
       </section>
 
       <div className="career-track-list">
@@ -291,30 +333,19 @@ export function CareerGuide({
                         {t('paths', 'مسیر')}
                       </small>
                     </div>
-                    <div className="career-domain-body">
-                      <CareerDomainTree
-                        domainId={domain.id}
-                        locale={locale}
-                        onOpen={onOpen}
-                      />
-                      <div className="career-card-grid">
-                        {domain.careerIds.map((id, careerIndex) => (
-                          <CareerCard
-                            key={id}
-                            career={careerById[id]}
-                            locale={locale}
-                            number={formatPath(
-                              [
-                                trackIndex + 1,
-                                domainIndex + 1,
-                                careerIndex + 1,
-                              ],
-                              locale,
-                            )}
-                            onOpen={onOpen}
-                          />
-                        ))}
-                      </div>
+                    <div className="career-card-grid">
+                      {domain.careerIds.map((id, careerIndex) => (
+                        <CareerCard
+                          key={id}
+                          career={careerById[id]}
+                          locale={locale}
+                          number={formatPath(
+                            [trackIndex + 1, domainIndex + 1, careerIndex + 1],
+                            locale,
+                          )}
+                          onOpen={onOpen}
+                        />
+                      ))}
                     </div>
                   </section>
                 );
