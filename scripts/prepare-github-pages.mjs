@@ -11,8 +11,16 @@ import {
 import { join, parse } from 'node:path';
 
 const outputDirectory = join(process.cwd(), 'dist', 'client');
-const pagesBasePath = '/ISE-Domain/';
-const prefixedAssetsDirectory = join(outputDirectory, 'ISE-Domain');
+const pagesRepository =
+  process.env.GITHUB_REPOSITORY?.split('/')[1] || 'ISE-Domain-JJK-Alt';
+if (
+  !/^[a-zA-Z0-9_.-]+$/.test(pagesRepository) ||
+  ['.', '..'].includes(pagesRepository)
+) {
+  throw new Error('Invalid GitHub Pages repository name.');
+}
+const pagesBasePath = `/${pagesRepository}/`;
+const prefixedAssetsDirectory = join(outputDirectory, pagesRepository);
 const nestedNextDirectory = join(prefixedAssetsDirectory, '_next');
 const publicNextDirectory = join(outputDirectory, '_next');
 
@@ -55,14 +63,20 @@ let scriptCount = 0;
 
 for (const htmlFile of await collectHtmlFiles(outputDirectory)) {
   const html = await readFile(htmlFile, 'utf8');
-  const references = html.matchAll(/\b(?:href|src)="(\/ISE-Domain\/[^"?#]+)(?:[?#][^"]*)?"/g);
+  const references = html.matchAll(/\b(?:href|src)="([^"?#]+)(?:[?#][^"]*)?"/g);
 
   for (const match of references) {
     const publicPath = decodeURIComponent(match[1]);
-    const artifactPath = join(outputDirectory, publicPath.slice(pagesBasePath.length));
+    if (!publicPath.startsWith(pagesBasePath)) continue;
+    const artifactPath = join(
+      outputDirectory,
+      publicPath.slice(pagesBasePath.length),
+    );
 
-    if (publicPath.includes('/_next/') && publicPath.endsWith('.css')) stylesheetCount += 1;
-    if (publicPath.includes('/_next/') && publicPath.endsWith('.js')) scriptCount += 1;
+    if (publicPath.includes('/_next/') && publicPath.endsWith('.css'))
+      stylesheetCount += 1;
+    if (publicPath.includes('/_next/') && publicPath.endsWith('.js'))
+      scriptCount += 1;
 
     try {
       await access(artifactPath);
@@ -73,7 +87,9 @@ for (const htmlFile of await collectHtmlFiles(outputDirectory)) {
 }
 
 if (stylesheetCount === 0 || scriptCount === 0) {
-  throw new Error('GitHub Pages output does not reference its compiled CSS and JavaScript.');
+  throw new Error(
+    'GitHub Pages output does not reference its compiled CSS and JavaScript.',
+  );
 }
 
 if (missingReferences.size > 0) {

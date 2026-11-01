@@ -4,7 +4,9 @@
 
 # ISE Domain
 
-A bilingual, responsive introduction to Industrial and Systems Engineering. Built on the existing React 19 / TypeScript / vinext / Tailwind / Sites project.
+A bilingual, responsive field guide to Industrial and Systems Engineering, with the supplied Jujutsu Kaisen artwork. Built on React 19 / TypeScript / vinext / Tailwind / Sites.
+
+The overview uses a numbered subject directory, catalog-derived course counts, and editorial links to graduate pathways, careers, tools, and reading. `DESIGN.md` records the visual system and design decisions. `app/editorial.css` applies the shared charcoal/terracotta and warm-paper themes across the catalog.
 
 ## Run
 
@@ -16,7 +18,9 @@ A bilingual, responsive introduction to Industrial and Systems Engineering. Buil
 
 ## Routes and preferences
 
-`/en` and `/fa` contain the overview. Each locale has `/chart`, `/majors`, `/careers`, `/tools`, `/resources`, and `/wikipedia` routes. The root route restores the previous language, defaulting to English. Dark mode is the initial theme; preferences are saved in browser local storage.
+`/en` and `/fa` contain the overview. Each locale has `/chart`, `/majors`, `/careers`, `/tools`, `/resources`, `/wikipedia`, and `/data-science` routes. The root route restores the previous language, defaulting to English. Dark mode is the initial theme; preferences are saved in browser local storage.
+
+JJK audio and the mathematics introduction are off by default. Enable them with the overview's **JJK effects** control. Audio has a stop control; the five-second introduction has a focused skip button and supports Escape. Reduced-motion preferences bypass the introduction. Japanese industry principles advance only with the previous/next controls.
 
 Chart views and filters use URL parameters (`view`, `category`, `group`, `pathway`, `q`, `course`). Filters update immediately without server requests. Language links retain query parameters, including the selected course. There is no account system, database, or runtime AI service.
 
@@ -48,4 +52,4 @@ Data checks cover course identity, degree and category totals, accounting overla
 
 Reuse the existing `.openai/hosting.json` Sites project. Build, push the exact validated source with a short-lived credential, package using the Sites hosting helper, save that commit's version, and deploy to the project's existing audience. Never put source credentials in files or Git configuration.
 
-GitHub Pages is deployed from `.github/workflows/deploy-pages.yml`. The workflow builds a static export with the `/ISE-Domain` asset prefix, creates directory indexes for clean localized routes, and publishes `dist/client` instead of rendering this README as the project homepage.
+GitHub Pages is deployed from `.github/workflows/deploy-pages.yml`. The workflow derives its asset prefix from `GITHUB_REPOSITORY`, creates directory indexes for clean localized routes, and publishes `dist/client`. Local Pages builds default to `/ISE-Domain-JJK-Alt`; set `GITHUB_PAGES=true` for the static export, then run `node scripts/prepare-github-pages.mjs` before serving the artifact. Set `GITHUB_REPOSITORY=owner/repository` to verify another repository prefix.

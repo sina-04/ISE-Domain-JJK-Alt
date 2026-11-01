@@ -467,7 +467,11 @@ export function Explorer({
       }}
     >
       <Search size={18} />
+      <label className="catalog-search-label" htmlFor="catalog-search">
+        {t('Search', 'جست‌وجو')}
+      </label>
       <input
+        id="catalog-search"
         aria-label={t(
           'Search in English or Persian',
           'جست‌وجو به فارسی یا انگلیسی',

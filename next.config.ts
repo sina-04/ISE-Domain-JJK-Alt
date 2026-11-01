@@ -1,7 +1,9 @@
 import type { NextConfig } from 'next';
 
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
-const pagesBasePath = '/ISE-Domain';
+const pagesRepository =
+  process.env.GITHUB_REPOSITORY?.split('/')[1] || 'ISE-Domain-JJK-Alt';
+const pagesBasePath = `/${pagesRepository}`;
 
 const nextConfig: NextConfig = isGitHubPages
   ? {
