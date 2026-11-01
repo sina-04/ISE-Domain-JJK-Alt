@@ -2,6 +2,15 @@
 
 Verified 2026-11-01. This report supersedes the initial redesign report for the changed interface.
 
+## Career card row update
+
+Verified 2026-11-01. Domain detail cards now use one full-width horizontal row per career, including odd-count domains such as Project. Existing colors, type, badges, cards, and dialogs are preserved. At phone widths, row contents stack for legibility.
+
+- Production build passed and prerendered all 18 routes; Pages artifact verification resolved 68 stylesheet and 269 script references.
+- All 31 cards fill their parent grid width at 375, 768, and 1440px in English and Persian. No page overflow or clipped card children was found.
+- Inspected desktop Project and Persian phone rows. The existing career dialog opened and dismissed with Escape; no browser console errors were recorded.
+- This single-column row layout supersedes the detailed multi-column card grid in the structural revision below. The overview tree is unchanged.
+
 ## Career guide structure update
 
 Verified 2026-11-01 against https://sina-04.github.io/ISE-Domain/en/careers#career-domain-production.
