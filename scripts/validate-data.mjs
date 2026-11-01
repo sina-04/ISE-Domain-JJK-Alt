@@ -8,7 +8,8 @@ const courses = json('courses'),
   tools = json('tools'),
   pathways = json('pathways'),
   careerData = json('careers'),
-  aiExposure = json('ai-exposure');
+  aiExposure = json('ai-exposure'),
+  mathFoundations = json('math-foundations');
 const ids = new Set(courses.map((c) => c.id));
 assert.equal(ids.size, courses.length, 'Duplicate course IDs');
 assert.equal(courses.length, 84);
@@ -96,10 +97,22 @@ for (const t of tools) {
   for (const id of t.courseIds) assert(ids.has(id));
 }
 const careerIds = new Set(careerData.careers.map((career) => career.id));
+const mathCourseIds = mathFoundations.flatMap((group) => group.courseIds);
+assert.equal(mathFoundations.length, 4, 'Mathematical foundation branches');
+assert.equal(mathCourseIds.length, 14, 'Mathematics tree course count');
+assert.equal(new Set(mathCourseIds).size, 14, 'Mathematics tree duplicates');
+assert.deepEqual(
+  [...mathCourseIds].sort(),
+  courses
+    .filter((course) => course.categories.includes('math'))
+    .map((course) => course.id)
+    .sort(),
+  'Mathematics tree must cover the existing category exactly',
+);
 const exposureCareerIds = new Set(aiExposure.map((item) => item.careerId));
 assert.equal(careerData.tracks.length, 2, 'Career track count');
 assert.equal(careerData.domains.length, 10, 'Career domain count');
-assert.equal(careerData.careers.length, 30, 'Career profile count');
+assert.equal(careerData.careers.length, 31, 'Career profile count');
 assert.equal(
   careerData.careers.filter((career) => career.supplemental).length,
   0,
@@ -113,12 +126,12 @@ assert.equal(
 );
 assert.equal(
   aiExposure.length,
-  careerData.careers.length,
+  careerData.careers.length - 1,
   'AI-exposure profile count',
 );
 for (const career of careerData.careers)
   assert(
-    exposureCareerIds.has(career.id),
+    exposureCareerIds.has(career.id) || career.id === 'maintenance-repair',
     `Missing AI exposure for ${career.id}`,
   );
 for (const exposure of aiExposure) {
@@ -160,7 +173,15 @@ assert.deepEqual(
   'Career track hierarchy',
 );
 const treeCareerIds = careerData.domains.flatMap((domain) => domain.careerIds);
-assert.equal(new Set(treeCareerIds).size, 30, 'Career tree membership');
+assert.equal(new Set(treeCareerIds).size, 31, 'Career tree membership');
+assert.deepEqual(
+  careerData.domains.find((domain) => domain.id === 'production').careerIds,
+  ['maintenance-repair', 'production-planning'],
+);
+assert(
+  !exposureCareerIds.has('maintenance-repair'),
+  'Do not invent an AI-exposure rating for the new role',
+);
 for (const id of treeCareerIds) {
   const career = careerData.careers.find((item) => item.id === id);
   assert(career && !career.supplemental, `Invalid tree career ${id}`);
@@ -205,7 +226,10 @@ for (const career of careerData.careers) {
     );
   assert(career.tools.length >= 3, `${career.id} tools`);
 }
-const careerSources = careerData.careers.filter((career) => career.source);
+const careerSources = careerData.careers.filter(
+  (career) =>
+    career.source && new URL(career.source.url).hostname === 'jobvision.ir',
+);
 assert.equal(careerSources.length, 18, 'JobVision source count');
 for (const career of careerSources) {
   const source = new URL(career.source.url);
@@ -216,6 +240,11 @@ for (const career of careerSources) {
     `${career.id} source label`,
   );
 }
+assert.equal(
+  careerData.careers.find((career) => career.id === 'maintenance-repair').source
+    .url,
+  'https://www.onetonline.org/link/summary/49-9041.00',
+);
 const categoryConfig = readFileSync(
   new URL('../lib/domain-config.ts', import.meta.url),
   'utf8',
@@ -268,5 +297,5 @@ for (const asset of [
 ])
   assert(existsSync(new URL(`../public/${asset}`, import.meta.url)), asset);
 console.log(
-  `Validated ${courses.length} courses, degree and subject totals, ${pathways.length} pathway groups, ${tools.length} tools, ${careerData.careers.length} bilingual career profiles with AI-exposure mappings, relationships and destinations.`,
+  `Validated ${courses.length} courses, degree and subject totals, ${pathways.length} pathway groups, ${tools.length} tools, ${careerData.careers.length} bilingual career profiles (${aiExposure.length} rated, 1 unrated), relationships and destinations.`,
 );

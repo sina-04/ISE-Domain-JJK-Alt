@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Barlow_Condensed, Manrope } from 'next/font/google';
 import './globals.css';
 import './editorial.css';
+import './domain-trees.css';
 const display = Barlow_Condensed({
   weight: ['500', '600', '700', '800'],
   subsets: ['latin'],
@@ -17,6 +18,7 @@ const persianFontFaces = `
 @font-face{font-family:'Sahel';src:url('${publicBasePath}/fonts/Sahel-Black.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
 `;
 export const metadata: Metadata = {
+  icons: { icon: `${publicBasePath}/favicon.svg` },
   title: {
     default: 'ISE Domain — Industrial & Systems Engineering',
     template: '%s | ISE Domain',

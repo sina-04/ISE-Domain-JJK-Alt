@@ -40,5 +40,6 @@ next-env.d.ts
 /work/
 
 # local source extraction and validation artifacts
+/Delete/
 /tmp/
 *.tsbuildinfo

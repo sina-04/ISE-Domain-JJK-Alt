@@ -27,10 +27,16 @@ export function AIExposureBadge({
   exposure,
   locale,
 }: {
-  exposure: AIExposure;
+  exposure?: AIExposure;
   locale: Locale;
 }) {
   const t = (en: string, fa: string) => (locale === 'fa' ? fa : en);
+  if (!exposure)
+    return (
+      <span className="ai-exposure-badge">
+        {t('AI exposure: not rated', 'مواجهه با AI: ارزیابی نشده')}
+      </span>
+    );
   return (
     <span
       className="ai-exposure-badge"
@@ -49,11 +55,25 @@ export function AIExposurePanel({
   exposure,
   locale,
 }: {
-  exposure: AIExposure;
+  exposure?: AIExposure;
   locale: Locale;
 }) {
   const fa = locale === 'fa';
   const t = (en: string, per: string) => (fa ? per : en);
+  if (!exposure)
+    return (
+      <section className="ai-exposure-panel">
+        <h3>
+          {t('AI exposure: not rated', 'مواجهه با هوش مصنوعی: ارزیابی نشده')}
+        </h3>
+        <p>
+          {t(
+            'No occupation from the supplied ranking has been mapped to this career.',
+            'هنوز شغلی از رتبه‌بندی ارائه‌شده به این مسیر نگاشت نشده است.',
+          )}
+        </p>
+      </section>
+    );
   const level = exposureLevels[exposure.score as keyof typeof exposureLevels];
 
   return (

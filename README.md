@@ -6,7 +6,7 @@
 
 A bilingual, responsive field guide to Industrial and Systems Engineering, with the supplied Jujutsu Kaisen artwork. Built on React 19 / TypeScript / vinext / Tailwind / Sites.
 
-The overview uses a numbered subject directory, catalog-derived course counts, and editorial links to graduate pathways, careers, tools, and reading. `DESIGN.md` records the visual system and design decisions. `app/editorial.css` applies the shared charcoal/terracotta and warm-paper themes across the catalog.
+The overview uses a subject directory, catalog-derived course counts, and editorial links to graduate pathways, careers, tools, and reading. `DESIGN.md` records the visual system and design decisions. `app/editorial.css` defines the supplied purple palette; `app/domain-trees.css` styles the Mathematics hierarchy, filled career-domain boxes, and restored motion details.
 
 ## Run
 
@@ -20,7 +20,7 @@ The overview uses a numbered subject directory, catalog-derived course counts, a
 
 `/en` and `/fa` contain the overview. Each locale has `/chart`, `/majors`, `/careers`, `/tools`, `/resources`, `/wikipedia`, and `/data-science` routes. The root route restores the previous language, defaulting to English. Dark mode is the initial theme; preferences are saved in browser local storage.
 
-JJK audio and the mathematics introduction are off by default. Enable them with the overview's **JJK effects** control. Audio has a stop control; the five-second introduction has a focused skip button and supports Escape. Reduced-motion preferences bypass the introduction. Japanese industry principles advance only with the previous/next controls.
+JJK effects default on and can be disabled with the overview's **JJK effects** control. Mathematics plays the original 23-second Sukuna sequence with wallpaper, fire, subtitles, audio, and the final reveal. A focused skip button and Escape offer an immediate route to the courses; reduced-motion preferences bypass the introduction. Theme changes expand from their toggle and offscreen sections fade in once. Japanese industry principles advance only with the previous/next controls.
 
 Chart views and filters use URL parameters (`view`, `category`, `group`, `pathway`, `q`, `course`). Filters update immediately without server requests. Language links retain query parameters, including the selected course. There is no account system, database, or runtime AI service.
 
@@ -28,12 +28,15 @@ Module links use native document navigation through `components/site-link.tsx`. 
 
 ## Content and provenance
 
+- The factory logo and favicon use the unmodified [Twemoji factory SVG](https://github.com/jdecked/twemoji/blob/main/assets/svg/1f3ed.svg), by Twitter, Inc. and other contributors, under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The graphics license and attribution are bundled in `public/factory-LICENSE.txt` and `public/factory-ATTRIBUTION.md`.
+
 - The original workbook is authoritative: 81 undergraduate courses, 140 required credits (21 + 66 + 22 + 22 + 6 + 3), and the supplied overlapping subject categories.
 - Three healthcare courses remain supplementary; seven graduate pathways and three supporting groupings reproduce the workbook mappings.
 - Missing elective credits, prerequisite relationships and source references are enriched from the supplied 1403 PDF. The elective pool's sum is distinct from the 22-credit graduation requirement.
 - Bilingual introductions are editorial summaries. Workbook degree groupings and PDF syllabus details remain distinct.
 - `lib/data/courses.json`, `pathways.json`, and `tools.json` are the published typed catalog. Source records retain sheet/range or PDF page references. The public PDF is a byte-for-byte copy; the source workbook and its personal commentary are not published.
-- `lib/data/careers.json` contains the bilingual Traditional/Modern ISE career hierarchy: 10 domains, 30 complete career guides, and the supplied JobVision source links. Source-backed text is paraphrased into an evergreen format without volatile market statistics.
+- `lib/data/careers.json` contains the bilingual Traditional/Modern ISE career hierarchy: 10 domains and 31 career guides. Industrial/Manufacturing contains Maintenance and Repair and Production Planning. The new maintenance guide links to the related O*NET occupation; it has no invented AI-exposure rating. The supplied JobVision links remain intact.
+- `lib/data/math-foundations.json` maps all 14 Mathematics courses into Foundations, Statistics, Optimization, and Machine Learning Foundations without changing course or credit totals.
 - `scripts/course-content.tsv`, `pathway-content.json`, and `tool-content.tsv` hold editable descriptions and mappings. Run `scripts/import-catalog.py` with Python containing openpyxl and pypdf, then `scripts/enrich-catalog.py` (requires internet access) to rebuild JSON. Keep the original workbook and PDF in the project root when rebuilding.
 - The enrichment script verifies Wikipedia article existence, follows redirects, excludes disambiguation pages, and validates Persian language links. Missing Persian articles are displayed honestly. Links are related-topic articles, not university course pages.
 - `lib/resources.ts` holds the curated library and source URLs. Two Persian books link to their curriculum bibliography, not unauthorized book copies.
@@ -42,9 +45,11 @@ Module links use native document navigation through `components/site-link.tsx`. 
 
 ## Replace backgrounds
 
-Edit `categories` in `lib/domain-config.ts` to change the asset URL, desktop focal position, mobile focal position and accent. The five supplied SVGs are unchanged. The other engineering category and all non-category pages use simple backgrounds. `Satoru-Gojo-Hollow-Purple.svg` is not referenced.
+Edit `categories` in `lib/domain-config.ts` to change each subject's artwork, desktop/mobile focal position, accent, and audio. The overview uses `JJK-all-in-one.svg`; the Data Science experience uses the supplied Red-and-Blue and Hollow-Purple Gojo artwork. `factory.svg` is the header logo.
 
 ## Validation
+
+The latest requested changes and their checks are documented in [REVISION-VERIFICATION.md](REVISION-VERIFICATION.md).
 
 Data checks cover course identity, degree and category totals, accounting overlap, supplementary-course separation, prerequisite and pathway references, software consolidation, the complete bilingual career hierarchy, and external destinations. Browser QA covers responsive layouts, language/theme controls, search, filters, course dialogs, and URL-backed career dialogs. Reduced-motion media queries disable decorative transitions. Native links and accessible Base UI tabs/dialogs support keyboard use.
 

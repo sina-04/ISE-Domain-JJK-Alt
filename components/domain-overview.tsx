@@ -194,7 +194,8 @@ export function DomainOverview({
         <div className="directory-heading">
           <div>
             <p className="section-index">
-              {t('01 / The subject directory', '۰۱ / فهرست حوزه‌ها')}
+              <span className="section-number">{t('01 / ', '۰۱ / ')}</span>
+              {t('The subject directory', 'فهرست حوزه‌ها')}
             </p>
             <h2 id="directory-title">
               {t('Choose your domain', 'قلمروتان را انتخاب کنید')}
@@ -267,7 +268,8 @@ export function DomainOverview({
       <section className="next-directory" aria-labelledby="next-title">
         <div className="next-introduction">
           <p className="section-index">
-            {t('02 / Beyond the curriculum', '۰۲ / فراتر از برنامه درسی')}
+            <span className="section-number">{t('02 / ', '۰۲ / ')}</span>
+            {t('Beyond the curriculum', 'فراتر از برنامه درسی')}
           </p>
           <h2 id="next-title">
             {t('Build your ', 'مسیر بعدی ')}
@@ -307,11 +309,9 @@ export function DomainOverview({
         </div>
         <div className="industry-copy" aria-live="polite" aria-atomic="true">
           <p className="section-index">
-            {t(
-              '03 / Notes from Japanese industry',
-              '۰۳ / یادداشت‌هایی از صنعت ژاپن',
-            )}{' '}
-            · {current.name[language]}
+            <span className="section-number">{t('03 / ', '۰۳ / ')}</span>
+            {t('Notes from Japanese industry', 'یادداشت‌هایی از صنعت ژاپن')} ·{' '}
+            {current.name[language]}
           </p>
           <h2 id="industry-title">{current.title[language]}</h2>
           <p>{current.copy[language]}</p>

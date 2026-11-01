@@ -72,7 +72,7 @@ export interface CareerProfile {
   progression: { en: string[]; fa: string[] };
   relatedRoles: { en: string[]; fa: string[] };
   source: CareerSource | null;
-  aiExposure: AIExposure;
+  aiExposure?: AIExposure;
 }
 export interface AIExposure {
   careerId: string;

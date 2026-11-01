@@ -1,5 +1,7 @@
 # Redesign verification
 
+This is the initial redesign's historical report. See [REVISION-VERIFICATION.md](REVISION-VERIFICATION.md) for the subsequent user-requested purple palette, restored motion, and tree changes.
+
 Verified 2026-11-01. Scope: the new overview, shared navigation/search/footer, theme tokens, and GitHub Pages export configuration. The underlying catalog and its source records are unchanged.
 
 ## Executed checks

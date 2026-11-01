@@ -10,6 +10,7 @@ import {
   useSyncExternalStore,
   type MouseEvent,
 } from 'react';
+import { flushSync } from 'react-dom';
 import {
   ArrowUp,
   Globe2,
@@ -27,6 +28,8 @@ import { DataSciencePage } from '@/components/data-science-page';
 import { SiteSearch } from '@/components/site-search';
 import { categories, type Locale } from '@/lib/domain-config';
 import { withBasePath } from '@/lib/base-path';
+import { SukunaScene } from '@/components/sukuna-scene';
+import { SocialLinks } from '@/components/social-links';
 
 const navigation = [
   ['home', 'Overview', 'نمای کلی'],
@@ -52,9 +55,9 @@ const readEffects = () => {
     return document.documentElement.dataset.domainEffects === 'true';
   }
   try {
-    return localStorage.getItem('ise-domain-effects') === 'true';
+    return localStorage.getItem('ise-domain-effects-v2') !== 'false';
   } catch {
-    return false;
+    return true;
   }
 };
 
@@ -88,13 +91,17 @@ export function DomainApp({
   const effects = useSyncExternalStore(
     subscribeEffects,
     readEffects,
-    () => false,
+    () => true,
   );
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState(false);
-  const [intro, setIntro] = useState(false);
+  const [introPhase, setIntroPhase] = useState<
+    'wallpaper' | 'fire' | 'reveal' | null
+  >(null);
+  const intro = introPhase !== null;
   const audio = useRef<HTMLAudioElement | null>(null);
-  const introTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const introTimers = useRef<number[]>([]);
+  const themeTransition = useRef(false);
   const skipButton = useRef<HTMLButtonElement | null>(null);
   const introDialog = useRef<HTMLDialogElement | null>(null);
   const menuButton = useRef<HTMLButtonElement | null>(null);
@@ -122,7 +129,7 @@ export function DomainApp({
   useEffect(
     () => () => {
       audio.current?.pause();
-      if (introTimer.current) clearTimeout(introTimer.current);
+      introTimers.current.forEach((timer) => clearTimeout(timer));
     },
     [],
   );
@@ -150,13 +157,119 @@ export function DomainApp({
     };
   }, [intro]);
 
-  function toggleTheme() {
+  useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
+    const tracked = new Map<Element, Animation | null>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            tracked.get(entry.target)?.play();
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.04, rootMargin: '0px 0px -24px 0px' },
+    );
+    const register = () => {
+      document
+        .querySelectorAll(
+          '.field-entry, .next-directory, .industry-note, .course-group, .pathway-card, .career-domain-section, .tool-card, .resource-row, .wiki-row',
+        )
+        .forEach((element) => {
+          if (tracked.has(element) || reducedMotion.matches) return;
+          tracked.set(element, null);
+          if (element.getBoundingClientRect().top < window.innerHeight - 40)
+            return;
+          if (typeof element.animate !== 'function') return;
+          const animation = element.animate(
+            [
+              { opacity: 0, transform: 'translateY(16px)' },
+              { opacity: 1, transform: 'translateY(0)' },
+            ],
+            {
+              duration: 420,
+              easing: 'cubic-bezier(.23, 1, .32, 1)',
+              fill: 'both',
+            },
+          );
+          animation.pause();
+          animation.currentTime = 0;
+          tracked.set(element, animation);
+          void animation.finished
+            .then(() => animation.cancel())
+            .catch(() => {});
+          observer.observe(element);
+        });
+    };
+    const revealFocused = (event: FocusEvent) => {
+      if (!(event.target instanceof Element)) return;
+      for (
+        let element: Element | null = event.target;
+        element;
+        element = element.parentElement
+      ) {
+        tracked.get(element)?.finish();
+      }
+    };
+    const revealAll = () => {
+      if (reducedMotion.matches)
+        tracked.forEach((animation) => animation?.cancel());
+    };
+    register();
+    const mutations = new MutationObserver(register);
+    const main = document.getElementById('main');
+    if (main) mutations.observe(main, { childList: true, subtree: true });
+    document.addEventListener('focusin', revealFocused);
+    reducedMotion.addEventListener('change', revealAll);
+    return () => {
+      observer.disconnect();
+      mutations.disconnect();
+      document.removeEventListener('focusin', revealFocused);
+      reducedMotion.removeEventListener('change', revealAll);
+      tracked.forEach((animation) => animation?.cancel());
+    };
+  }, [activeSection]);
+
+  async function toggleTheme(event: MouseEvent<HTMLButtonElement>) {
+    if (themeTransition.current) return;
     const next = theme === 'dark' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
-    window.dispatchEvent(new Event('ise-themechange'));
+    let applied = false;
+    const apply = () => {
+      applied = true;
+      document.documentElement.dataset.theme = next;
+      window.dispatchEvent(new Event('ise-themechange'));
+      try {
+        localStorage.setItem('ise-theme', next);
+      } catch {}
+    };
+    if (
+      !document.startViewTransition ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      apply();
+      return;
+    }
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = bounds.left + bounds.width / 2;
+    const y = bounds.top + bounds.height / 2;
+    const radius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y),
+    );
+    document.documentElement.style.setProperty('--theme-x', `${x}px`);
+    document.documentElement.style.setProperty('--theme-y', `${y}px`);
+    document.documentElement.style.setProperty('--theme-radius', `${radius}px`);
+    themeTransition.current = true;
     try {
-      localStorage.setItem('ise-theme', next);
-    } catch {}
+      const transition = document.startViewTransition(() => flushSync(apply));
+      await transition.finished;
+    } catch {
+      if (!applied) apply();
+    } finally {
+      themeTransition.current = false;
+    }
   }
 
   function stopAudio() {
@@ -172,7 +285,7 @@ export function DomainApp({
     setAudioError(false);
     if (!next) stopAudio();
     try {
-      localStorage.setItem('ise-domain-effects', String(next));
+      localStorage.setItem('ise-domain-effects-v2', String(next));
     } catch {}
   }
 
@@ -188,17 +301,17 @@ export function DomainApp({
   }
 
   function finishIntro() {
-    if (introTimer.current) clearTimeout(introTimer.current);
-    introTimer.current = null;
+    introTimers.current.forEach((timer) => clearTimeout(timer));
+    introTimers.current = [];
     introDialog.current?.close();
-    setIntro(false);
+    setIntroPhase(null);
     stopAudio();
     const category = pendingCategory.current;
     pendingCategory.current = null;
     if (category) {
       showDomain(category);
-      requestAnimationFrame(() => document.getElementById('main')?.focus());
     }
+    requestAnimationFrame(() => document.getElementById('main')?.focus());
   }
 
   function handleDomainClick(
@@ -243,8 +356,17 @@ export function DomainApp({
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ) {
       pendingCategory.current = category.id;
-      setIntro(true);
-      introTimer.current = setTimeout(finishIntro, 5000);
+      setIntroPhase('wallpaper');
+      introTimers.current = [
+        window.setTimeout(() => setIntroPhase('fire'), 7000),
+        window.setTimeout(() => {
+          const category = pendingCategory.current;
+          pendingCategory.current = null;
+          if (category) showDomain(category);
+          setIntroPhase('reveal');
+        }, 18000),
+        window.setTimeout(finishIntro, 23000),
+      ];
     } else showDomain(category.id);
   }
 
@@ -264,8 +386,13 @@ export function DomainApp({
             className="brand"
             aria-label={t('ISE Domain overview', 'نمای کلی قلمرو صنایع')}
           >
-            <span className="brand-symbol" lang="ja" aria-hidden="true">
-              領域
+            <span className="brand-symbol" aria-hidden="true">
+              <img
+                src={withBasePath('/factory.svg')}
+                width="32"
+                height="32"
+                alt=""
+              />
             </span>
             <span>
               ISE<span className="brand-thin">DOMAIN</span>
@@ -427,31 +554,26 @@ export function DomainApp({
       {intro && (
         <dialog
           ref={introDialog}
-          className="domain-intro"
+          className={`sukuna-domain-expansion is-${introPhase}`}
           aria-labelledby="domain-intro-title"
           onCancel={(event) => {
             event.preventDefault();
             finishIntro();
           }}
         >
-          <img
-            src={withBasePath('/Sukuna-Domain-Expansion.svg')}
-            width="1920"
-            height="1080"
-            alt=""
-          />
-          <div className="domain-intro-caption">
-            <p lang="ja" aria-hidden="true">
-              領域展開
-            </p>
-            <h2 id="domain-intro-title">
-              {t('Domain Expansion', 'گسترش قلمرو')}
-            </h2>
-            <button type="button" ref={skipButton} onClick={finishIntro}>
-              {t('Skip to mathematics', 'رفتن به ریاضیات')}
-              <X size={18} aria-hidden="true" />
-            </button>
-          </div>
+          <SukunaScene />
+          <h2 id="domain-intro-title" className="sr-only">
+            {t('Domain Expansion', 'گسترش قلمرو')}
+          </h2>
+          <button
+            className="sukuna-skip"
+            type="button"
+            ref={skipButton}
+            onClick={finishIntro}
+          >
+            {t('Skip to mathematics', 'رفتن به ریاضیات')}
+            <X size={18} aria-hidden="true" />
+          </button>
         </dialog>
       )}
       <footer className="site-footer" inert={intro || undefined}>
@@ -480,32 +602,7 @@ export function DomainApp({
               'اثر سینا رضایی · دانشجوی مهندسی صنایع و سیستم‌ها',
             )}
           </p>
-          <nav
-            className="footer-links"
-            aria-label={t('Sina Rezaei links', 'پیوندهای سینا رضایی')}
-          >
-            <a
-              href="https://github.com/sina-04"
-              target="_blank"
-              rel="noreferrer"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/sina-rezaei-062a30416"
-              target="_blank"
-              rel="noreferrer"
-            >
-              LinkedIn
-            </a>
-            <a href="https://x.com/Sina_41148" target="_blank" rel="noreferrer">
-              X
-            </a>
-            <a href="https://t.me/InfiniteSoA" target="_blank" rel="noreferrer">
-              Telegram
-            </a>
-            <a href="mailto:sina.rezaei.04@gmail.com">{t('Email', 'ایمیل')}</a>
-          </nav>
+          <SocialLinks locale={locale} />
         </div>
       </footer>
     </div>

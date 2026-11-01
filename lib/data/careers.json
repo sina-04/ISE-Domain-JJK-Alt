@@ -69,8 +69,11 @@
     {
       "id": "production",
       "trackId": "traditional",
-      "name": { "en": "Production Domain", "fa": "حوزه تولید" },
-      "careerIds": ["production-planning"]
+      "name": {
+        "en": "Industrial/Manufacturing Domain",
+        "fa": "حوزه صنعت و تولید"
+      },
+      "careerIds": ["maintenance-repair", "production-planning"]
     },
     {
       "id": "modeling-optimization",
@@ -123,6 +126,93 @@
     }
   ],
   "careers": [
+    {
+      "id": "maintenance-repair",
+      "domainId": "production",
+      "supplemental": false,
+      "name": { "en": "Maintenance and Repair", "fa": "نگهداری و تعمیرات" },
+      "abbreviation": "M&R",
+      "summary": {
+        "en": "Keep industrial equipment reliable through planned maintenance, fault diagnosis, repair records, and coordination with production teams.",
+        "fa": "با نگهداری برنامه‌ریزی‌شده، عیب‌یابی، ثبت تعمیرات و هماهنگی با تیم تولید، قابلیت اطمینان تجهیزات صنعتی را حفظ کنید."
+      },
+      "iseFit": {
+        "en": "ISE contributes maintenance scheduling, spare-parts planning, reliability analysis, and process improvement; hands-on repairs also require equipment-specific technical training.",
+        "fa": "مهندسی صنایع در زمان‌بندی نگهداری، برنامه‌ریزی قطعات یدکی، تحلیل قابلیت اطمینان و بهبود فرایند نقش دارد؛ تعمیر عملی به آموزش فنی ویژه تجهیزات نیز نیاز دارد."
+      },
+      "dayInLife": {
+        "en": "Review equipment condition and open work orders, coordinate planned downtime, document repairs, and use failure records to inform the next maintenance plan.",
+        "fa": "وضعیت تجهیزات و دستورکارهای باز را بررسی کنید، توقف برنامه‌ریزی‌شده را هماهنگ کنید، تعمیرات را ثبت کنید و از سوابق خرابی برای برنامه بعدی بهره ببرید."
+      },
+      "responsibilities": {
+        "en": [
+          "Plan inspections and maintenance work",
+          "Record faults, repairs, and replacement parts",
+          "Coordinate equipment availability with production"
+        ],
+        "fa": [
+          "برنامه‌ریزی بازرسی و فعالیت‌های نگهداری",
+          "ثبت خرابی‌ها، تعمیرات و قطعات تعویض‌شده",
+          "هماهنگی دسترس‌پذیری تجهیزات با تولید"
+        ]
+      },
+      "skills": {
+        "en": [
+          "Maintenance and reliability fundamentals",
+          "Failure-data analysis and troubleshooting",
+          "Work-order and spare-parts planning"
+        ],
+        "fa": [
+          "مبانی نگهداری و قابلیت اطمینان",
+          "تحلیل داده‌های خرابی و عیب‌یابی",
+          "برنامه‌ریزی دستورکار و قطعات یدکی"
+        ]
+      },
+      "tools": ["CMMS", "Excel", "Equipment manuals", "Maintenance logs"],
+      "entrySteps": {
+        "en": [
+          "Study Maintenance and Repair Planning",
+          "Analyze an example equipment-maintenance log",
+          "Seek a supervised maintenance-planning placement"
+        ],
+        "fa": [
+          "درس برنامه‌ریزی نگهداری و تعمیرات را مطالعه کنید",
+          "نمونه‌ای از سوابق نگهداری تجهیزات را تحلیل کنید",
+          "یک فرصت کارآموزی برنامه‌ریزی نگهداری زیر نظر متخصص بیابید"
+        ]
+      },
+      "progression": {
+        "en": [
+          "Maintenance-planning assistant",
+          "Maintenance or reliability planner",
+          "Maintenance-planning lead"
+        ],
+        "fa": [
+          "دستیار برنامه‌ریزی نگهداری",
+          "برنامه‌ریز نگهداری یا قابلیت اطمینان",
+          "سرپرست برنامه‌ریزی نگهداری"
+        ]
+      },
+      "relatedRoles": {
+        "en": [
+          "Reliability analyst",
+          "Spare-parts planner",
+          "Production planner"
+        ],
+        "fa": [
+          "تحلیلگر قابلیت اطمینان",
+          "برنامه‌ریز قطعات یدکی",
+          "برنامه‌ریز تولید"
+        ]
+      },
+      "source": {
+        "label": {
+          "en": "Related occupation: O*NET Industrial Machinery Mechanics",
+          "fa": "شغل مرتبط: مکانیک ماشین‌آلات صنعتی در O*NET"
+        },
+        "url": "https://www.onetonline.org/link/summary/49-9041.00"
+      }
+    },
     {
       "id": "data-analytics",
       "domainId": "data",
@@ -2170,7 +2260,12 @@
           "تحلیل ریسک، حساسیت و سناریو"
         ]
       },
-      "tools": ["Excel", "Financial models", "Market research", "Sensitivity analysis"],
+      "tools": [
+        "Excel",
+        "Financial models",
+        "Market research",
+        "Sensitivity analysis"
+      ],
       "entrySteps": {
         "en": [
           "Master engineering economy, forecasting, and project evaluation",

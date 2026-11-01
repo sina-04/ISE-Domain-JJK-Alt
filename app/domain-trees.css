@@ -1,0 +1,375 @@
+.editorial-shell .brand-symbol {
+  background: var(--surface-raised);
+  border-radius: 9px;
+}
+::view-transition,
+::view-transition-group(root),
+::view-transition-image-pair(root),
+::view-transition-old(root),
+::view-transition-new(root) {
+  pointer-events: none;
+}
+.brand-symbol img {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+.editorial-shell .field-artwork,
+.editorial-shell .field-entry-image {
+  border-radius: 14px;
+}
+.editorial-shell .content-group {
+  border-radius: 14px;
+}
+.editorial-shell .industry-note {
+  grid-template-columns: 136px minmax(0, 1fr) auto;
+}
+.editorial-shell .industry-seal {
+  width: 136px;
+  height: 136px;
+  padding: 12px;
+  border-width: 2px;
+  font-size: 36px;
+  white-space: nowrap;
+}
+.editorial-shell .social-links {
+  margin-inline-start: auto;
+  gap: 10px;
+}
+.editorial-shell .social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--foreground);
+}
+.editorial-shell .social-link:hover {
+  background: var(--surface-raised);
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: none;
+}
+.editorial-shell .social-link svg {
+  width: 20px;
+  height: 20px;
+}
+.editorial-shell .social-link .social-mail {
+  fill: none;
+  stroke: currentColor;
+}
+dialog.sukuna-domain-expansion {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.sukuna-skip {
+  position: absolute;
+  z-index: 10;
+  top: max(20px, env(safe-area-inset-top));
+  inset-inline-end: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 10px 18px;
+  border: 1px solid #e0aaff;
+  border-radius: 8px;
+  background: #240046;
+  color: #faf5ff;
+}
+.sukuna-skip:hover {
+  background: #3c096c;
+}
+.sukuna-skip:focus-visible {
+  outline: 3px solid #e0aaff;
+  outline-offset: 5px;
+}
+.sukuna-lights span {
+  filter: blur(16px);
+}
+@keyframes sukuna-light-drift {
+  from {
+    transform: translate3d(-58%, 10%, 0) scale(0.92) rotate(-10deg);
+  }
+  to {
+    transform: translate3d(-38%, -5%, 0) scale(1.08) rotate(9deg);
+  }
+}
+
+.editorial-shell .career-map {
+  display: block;
+  background: var(--surface);
+  border-radius: 14px;
+}
+.editorial-shell .career-map-intro {
+  max-width: 850px;
+}
+.editorial-shell .career-domain-section {
+  padding: 28px;
+  margin-bottom: 32px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  scroll-margin-top: 170px;
+}
+.editorial-shell .career-domain-heading {
+  padding-bottom: 22px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.career-domain-body {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.6fr) minmax(0, 1.4fr);
+  gap: 28px;
+  align-items: start;
+}
+.career-domain-tree {
+  min-width: 0;
+  padding-inline-end: 24px;
+  border-inline-end: 1px solid var(--line);
+}
+.career-domain-tree-root {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+.career-domain-tree ul {
+  list-style: none;
+  margin: 18px 0 0 12px;
+  padding: 0 0 0 18px;
+  border-inline-start: 1px solid var(--line);
+}
+[dir='rtl'] .career-domain-tree ul {
+  margin: 18px 12px 0 0;
+  padding: 0 18px 0 0;
+}
+.career-domain-tree li {
+  position: relative;
+  padding-block: 5px;
+}
+.career-domain-tree li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -18px;
+  top: 24px;
+  width: 14px;
+  border-top: 1px solid var(--line);
+}
+.career-domain-tree .career-tree-role {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 7px;
+  min-height: 48px;
+  padding: 8px 10px;
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--foreground);
+  text-align: start;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.career-domain-tree .career-tree-role:hover {
+  background: var(--surface-raised);
+  color: var(--accent);
+}
+.career-domain-tree .career-tree-role-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.career-domain-tree .career-tree-ai {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.6875rem;
+}
+.career-domain-tree .career-tree-acronym {
+  color: var(--accent);
+  font-size: 0.6875rem;
+}
+.editorial-shell .career-domain-section .career-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.editorial-shell .career-domain-section .career-card {
+  background: var(--surface-raised);
+  border-radius: 10px;
+}
+
+.mathematics-tree {
+  padding: 28px;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+.mathematics-tree-root {
+  margin: 0;
+  padding: 0 0 20px;
+  border-bottom: 1px solid var(--line);
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+.mathematics-tree-branches {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 28px;
+  padding: 28px 0 0;
+  margin: 0;
+  list-style: none;
+  margin-inline-start: 8px;
+  padding-inline-start: 24px;
+  border-inline-start: 1px solid var(--line);
+}
+.mathematics-tree-branch {
+  min-width: 0;
+  position: relative;
+}
+.mathematics-tree-branch::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -24px;
+  top: 14px;
+  width: 18px;
+  border-top: 1px solid var(--line);
+}
+.mathematics-tree-branch h4 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.65;
+}
+.mathematics-tree-branch h4 span {
+  color: var(--accent);
+}
+.mathematics-tree-branch ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-inline-start: 1px solid var(--line);
+}
+.mathematics-tree-branch li {
+  position: relative;
+  margin-inline-start: 18px;
+  padding-block: 5px;
+}
+.mathematics-tree-branch li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -18px;
+  top: 35px;
+  width: 14px;
+  border-top: 1px solid var(--line);
+}
+.editorial-shell .mathematics-tree .course-row {
+  padding: 12px;
+  gap: 12px;
+  min-height: 72px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-raised);
+}
+.editorial-shell .mathematics-tree .course-row:hover {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-raised));
+}
+.mathematics-tree .course-code {
+  display: none;
+}
+.mathematics-tree .course-name strong {
+  font-size: 0.875rem;
+}
+.mathematics-tree .course-name small {
+  font-size: 0.75rem;
+}
+
+@media (min-width: 801px) {
+  .editorial-shell .site-header .nav-index,
+  .section-number {
+    display: none;
+  }
+}
+@media (max-width: 1080px) {
+  .editorial-shell .industry-note {
+    grid-template-columns: 136px minmax(0, 1fr);
+  }
+  .career-domain-body {
+    grid-template-columns: minmax(180px, 0.6fr) minmax(0, 1.4fr);
+    gap: 20px;
+  }
+}
+@media (max-width: 800px) {
+  .editorial-shell .industry-note {
+    grid-template-columns: 112px minmax(0, 1fr);
+  }
+  .editorial-shell .industry-seal {
+    width: 112px;
+    height: 112px;
+    font-size: 28px;
+    padding: 8px;
+  }
+  .editorial-shell .social-links {
+    margin-inline-start: 0;
+  }
+  .career-domain-body {
+    grid-template-columns: 1fr;
+  }
+  .career-domain-tree {
+    border-inline-end: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 0 0 24px;
+  }
+  .mathematics-tree-branches {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .editorial-shell .industry-note {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 18px;
+    padding: 24px 18px;
+  }
+  .editorial-shell .industry-seal {
+    width: 96px;
+    height: 112px;
+    font-size: 24px;
+    padding: 8px;
+  }
+  .editorial-shell .career-domain-section {
+    padding: 20px 16px;
+  }
+  .editorial-shell .career-domain-heading {
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .editorial-shell .career-domain-heading h3 {
+    font-size: 1.25rem;
+  }
+  .mathematics-tree {
+    padding: 22px 16px;
+  }
+  .mathematics-tree-root {
+    font-size: 1.15rem;
+  }
+  .mathematics-tree .course-credit {
+    font-size: 1.15rem;
+  }
+}
