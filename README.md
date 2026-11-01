@@ -2,7 +2,7 @@
   <img src="./public/readme-cover.svg" alt="ISE Domain — Industrial and Systems Engineering" width="100%" />
 </p>
 
-# ISE Domain
+# ISE Domain · JJK Alt
 
 A bilingual, responsive field guide to Industrial and Systems Engineering, with the supplied Jujutsu Kaisen artwork. Built on React 19 / TypeScript / vinext / Tailwind / Sites.
 
